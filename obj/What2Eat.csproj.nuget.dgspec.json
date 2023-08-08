@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Corey Crooks\\OneDrive\\aIT488 Software Product Development Using Agile\\What2Eat\\What2EatGitHub\\What2Eat.csproj": {}
+    "C:\\Users\\Corey Crooks\\OneDrive\\GitHub\\What2Eat\\What2Eat.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Corey Crooks\\OneDrive\\aIT488 Software Product Development Using Agile\\What2Eat\\What2EatGitHub\\What2Eat.csproj": {
+    "C:\\Users\\Corey Crooks\\OneDrive\\GitHub\\What2Eat\\What2Eat.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Corey Crooks\\OneDrive\\aIT488 Software Product Development Using Agile\\What2Eat\\What2EatGitHub\\What2Eat.csproj",
+        "projectUniqueName": "C:\\Users\\Corey Crooks\\OneDrive\\GitHub\\What2Eat\\What2Eat.csproj",
         "projectName": "What2Eat",
-        "projectPath": "C:\\Users\\Corey Crooks\\OneDrive\\aIT488 Software Product Development Using Agile\\What2Eat\\What2EatGitHub\\What2Eat.csproj",
+        "projectPath": "C:\\Users\\Corey Crooks\\OneDrive\\GitHub\\What2Eat\\What2Eat.csproj",
         "packagesPath": "C:\\Users\\Corey Crooks\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Corey Crooks\\OneDrive\\aIT488 Software Product Development Using Agile\\What2Eat\\What2EatGitHub\\obj\\",
+        "outputPath": "C:\\Users\\Corey Crooks\\OneDrive\\GitHub\\What2Eat\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
