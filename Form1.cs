@@ -4,7 +4,7 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using System.Threading;
 using System.Reflection.Emit;
-using BackendRestaurants;
+using What2Eat;
 
 namespace What2Eat
 {
@@ -15,57 +15,58 @@ namespace What2Eat
             InitializeComponent();
             this.Text = "What2Eat";
             //Place first screen elements in their proper places
+            //    put the welcome message, the selection message, and the buttons at their correct heights on screen.
             lblWelcome.Top = this.Top + 30;
-            lblWelcomeStroke.AutoSize = false;
-            lblWelcomeStroke.Top = lblWelcome.Top - 2;
-            lblWelcomeStroke.Height = lblWelcome.Height + 4;
             btnRollOption.Top = lblWelcome.Top + lblWelcome.Height + 20;
             btnViewOptions.Top = btnRollOption.Top;
             lblSelection.Top = btnViewOptions.Top + btnViewOptions.Height + 30;
             lblSelectionStroke.Top = lblSelection.Top - 2;
 
+
+            //    put the welcome message, the selection message, and the buttons at their correct X cord on screen.
             int formWidth = this.Width;
             int perfectOffset = (formWidth - lblWelcome.Width) / 2;
             lblWelcome.Left = perfectOffset;
-            lblWelcomeStroke.Left = lblWelcome.Left - 2;
-            lblWelcomeStroke.AutoSize = false;
-            lblWelcomeStroke.Width = lblWelcome.Width + 4;
+            PlaceLabelStroke(lblWelcome, lblWelcomeStroke);
             perfectOffset = (formWidth - (btnRollOption.Width + btnViewOptions.Width + 6)) / 2;
             btnRollOption.Left = perfectOffset - 6;
             btnViewOptions.Left = perfectOffset + btnRollOption.Width + 6;
 
             //Place second screen elements into their proper places
+            //    This part's a little jumbled compared to the first screen. I plan on re-organizing it to make this more readable.
+            //    Center the welcome message
             perfectOffset = (this.Width - lblOptionsWelcome.Width) / 2;
             lblOptionsWelcome.Left = perfectOffset;
-            lblOptionsWelcomeStroke.Left = lblOptionsWelcome.Left - 2;
-            lblOptionsWelcomeStroke.Top = lblOptionsWelcome.Top - 2;
-            lblOptionsWelcomeStroke.Width = lblOptionsWelcome.Width + 4;
-            lblOptionsWelcomeStroke.Height = lblOptionsWelcome.Height + 4;
-
+            // Place the stroke label accordingly
+            PlaceLabelStroke(lblOptionsWelcome, lblOptionsWelcomeStroke);
+            //    Set the back button's X coord properly.
             btnBack.Left = (perfectOffset / 2) - (btnBack.Width / 2);
-            //     lay the groundwork for button size, location
+            //    lay the groundwork for button size, location
+            //    Set the first "Option X:" label where it needs to go using the button's location.
             lblOption1.Left = btnBack.Left + btnBack.Width;
             lblOption1.Top = lblWelcome.Top + lblWelcome.Height + 5;
-            lblOption1Stroke.Top = lblOption1.Top - 2;
-            lblOption1Stroke.Height = lblOption1.Height + 4;
-            lblOption1Stroke.Left = lblOption1.Left - 2;
-            lblOption1Stroke.Width = lblOption1.Width + 4;
+            //    Place the stoke label where it needs to go.
+            PlaceLabelStroke(lblOption1, lblOption1Stroke);
+            //    Place the Reroll Text Button where it needs to go using the welcome message, and back button's location
             btnDebugRerollText.Left = this.Width - (perfectOffset / 2) - (btnDebugRerollText.Width / 2);
             btnDebugRerollText.Top = btnBack.Top;
+
+            //    Set two variables to control the spacing vertically and horizontally between the option labels.
+            //        change once, change many.
             int optionVertSpacing = lblOption1.Height + 5;
             int optionColumnSpacing = lblOption1.Width + 15;
 
+            //Set the first option label's position using the coorisponding information label position. 
             lblOption1Name.Left = lblOption1.Left + optionColumnSpacing;
             lblOption1Name.Top = lblOption1.Top;
+            //Adjust the stroke label's position and size.
             lblOption1Name.SizeChanged += (s, ev) => AdjustAutoSizeLabelStroke(lblOption1Name, lblOption1NameStroke);
 
-            //     place each element in their correct location for option numbers.
+            //     place each option label and stroke label in their correct location for option numbers using the above method.
+            //     Yes. I do realize this can be further refactored. It's 3:44 AM and I just want to go to bed.
             lblOption2.Left = lblOption1.Left;
             lblOption2.Top = lblOption1.Top + optionVertSpacing;
-            lblOption2Stroke.Top = lblOption2.Top - 2;
-            lblOption2Stroke.Left = lblOption2.Left - 2;
-            lblOption2Stroke.Width = lblOption2.Width + 4;
-            lblOption2Stroke.Height = lblOption2.Height + 4;
+            PlaceLabelStroke(lblOption2, lblOption2Stroke);
 
             lblOption2Name.Left = lblOption1Name.Left;
             lblOption2Name.Top = lblOption2.Top;
@@ -73,10 +74,7 @@ namespace What2Eat
 
             lblOption3.Left = lblOption2.Left;
             lblOption3.Top = lblOption2.Top + optionVertSpacing;
-            lblOption3Stroke.Top = lblOption3.Top - 2;
-            lblOption3Stroke.Left = lblOption3.Left - 2;
-            lblOption3Stroke.Width = lblOption3.Width + 4;
-            lblOption3Stroke.Height = lblOption3.Height + 4;
+            PlaceLabelStroke(lblOption3, lblOption3Stroke);
 
             lblOption3Name.Left = lblOption2Name.Left;
             lblOption3Name.Top = lblOption3.Top;
@@ -84,10 +82,7 @@ namespace What2Eat
 
             lblOption4.Left = lblOption3.Left;
             lblOption4.Top = lblOption3.Top + optionVertSpacing;
-            lblOption4Stroke.Top = lblOption4.Top - 2;
-            lblOption4Stroke.Left = lblOption4.Left - 2;
-            lblOption4Stroke.Width = lblOption4.Width + 4;
-            lblOption4Stroke.Height = lblOption4.Height + 4;
+            PlaceLabelStroke(lblOption4, lblOption4Stroke);
 
             lblOption4Name.Left = lblOption3Name.Left;
             lblOption4Name.Top = lblOption4.Top;
@@ -95,10 +90,7 @@ namespace What2Eat
 
             lblOption5.Left = lblOption4.Left;
             lblOption5.Top = lblOption4.Top + optionVertSpacing;
-            lblOption5Stroke.Top = lblOption5.Top - 2;
-            lblOption5Stroke.Left = lblOption5.Left - 2;
-            lblOption5Stroke.Width = lblOption5.Width + 4;
-            lblOption5Stroke.Height = lblOption5.Height + 4;
+            PlaceLabelStroke(lblOption5, lblOption5Stroke);
 
             lblOption5Name.Left = lblOption4Name.Left;
             lblOption5Name.Top = lblOption5.Top;
@@ -106,10 +98,7 @@ namespace What2Eat
 
             lblOption6.Left = lblOption5.Left;
             lblOption6.Top = lblOption5.Top + optionVertSpacing;
-            lblOption6Stroke.Top = lblOption6.Top - 2;
-            lblOption6Stroke.Left = lblOption6.Left - 2;
-            lblOption6Stroke.Width = lblOption6.Width + 4;
-            lblOption6Stroke.Height = lblOption6.Height + 4;
+            PlaceLabelStroke(lblOption6, lblOption6Stroke);
 
             lblOption6Name.Left = lblOption5Name.Left;
             lblOption6Name.Top = lblOption6.Top;
@@ -117,10 +106,7 @@ namespace What2Eat
 
             lblOption7.Left = lblOption6.Left;
             lblOption7.Top = lblOption6.Top + optionVertSpacing;
-            lblOption7Stroke.Top = lblOption7.Top - 2;
-            lblOption7Stroke.Left = lblOption7.Left - 2;
-            lblOption7Stroke.Width = lblOption7.Width + 4;
-            lblOption7Stroke.Height = lblOption7.Height + 4;
+            PlaceLabelStroke(lblOption7, lblOption7Stroke);
 
             lblOption7Name.Left = lblOption6Name.Left;
             lblOption7Name.Top = lblOption7.Top;
@@ -128,10 +114,7 @@ namespace What2Eat
 
             lblOption8.Left = lblOption7.Left;
             lblOption8.Top = lblOption7.Top + optionVertSpacing;
-            lblOption8Stroke.Top = lblOption8.Top - 2;
-            lblOption8Stroke.Left = lblOption8.Left - 2;
-            lblOption8Stroke.Width = lblOption8.Width + 4;
-            lblOption8Stroke.Height = lblOption8.Height + 4;
+            PlaceLabelStroke(lblOption8, lblOption8Stroke);
 
             lblOption8Name.Left = lblOption7Name.Left;
             lblOption8Name.Top = lblOption8.Top;
@@ -139,10 +122,7 @@ namespace What2Eat
 
             lblOption9.Left = lblOption8.Left;
             lblOption9.Top = lblOption8.Top + optionVertSpacing;
-            lblOption9Stroke.Top = lblOption9.Top - 2;
-            lblOption9Stroke.Left = lblOption9.Left - 2;
-            lblOption9Stroke.Width = lblOption9.Width + 4;
-            lblOption9Stroke.Height = lblOption9.Height + 4;
+            PlaceLabelStroke(lblOption9, lblOption9Stroke);
 
             lblOption9Name.Left = lblOption8Name.Left;
             lblOption9Name.Top = lblOption9.Top;
@@ -150,206 +130,80 @@ namespace What2Eat
 
             lblOption10.Left = lblOption9.Left - 8;
             lblOption10.Top = lblOption9.Top + optionVertSpacing;
-            lblOption10Stroke.Top = lblOption10.Top - 2;
-            lblOption10Stroke.Left = lblOption10.Left - 2;
-            lblOption10Stroke.Width = lblOption10.Width + 4;
-            lblOption10Stroke.Height = lblOption10.Height + 4;
+            PlaceLabelStroke(lblOption10, lblOption10Stroke);
 
             lblOption10Name.Left = lblOption9Name.Left;
             lblOption10Name.Top = lblOption10.Top;
             lblOption10Name.SizeChanged += (s, ev) => AdjustAutoSizeLabelStroke(lblOption10Name, lblOption10NameStroke);
 
-
+            //Set the form color to the decided upon value.
             this.BackColor = ColorTranslator.FromHtml("#CCBFCA");
-            lblWelcome.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblWelcome.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblWelcome.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblWelcomeStroke.BackColor = ColorTranslator.FromHtml("#959595");
+
+            //Set aesthetic properties for first screen elements.
+            SetLabelColors(lblWelcome, lblWelcomeStroke);
             lblSelection.Visible = false;
             lblSelectionStroke.Visible = false;
-            lblSelection.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblSelection.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblSelection.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblSelectionStroke.BackColor = ColorTranslator.FromHtml("#959595");
+            SetLabelColors(lblSelection, lblSelectionStroke);
 
-
-            btnRollOption.FlatStyle = FlatStyle.Flat;
-            btnRollOption.FlatAppearance.BorderSize = 3;
-            btnRollOption.BackColor = ColorTranslator.FromHtml("#B98DA1");
-            btnRollOption.ForeColor = ColorTranslator.FromHtml("#4C3B43");
-
-            btnViewOptions.FlatStyle = FlatStyle.Flat;
-            btnViewOptions.FlatAppearance.BorderSize = 3;
-            btnViewOptions.BackColor = ColorTranslator.FromHtml("#B98DA1");
-            btnViewOptions.ForeColor = ColorTranslator.FromHtml("#4C3B43");
+            SetButtonColors(btnRollOption);
+            SetButtonColors(btnViewOptions);
+            SetButtonColors(btnBack);
+            SetButtonColors(btnDebugRerollText);
 
             //Set aesthetic properties for second screen elements
-            lblOptionsWelcome.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOptionsWelcome.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOptionsWelcome.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOptionsWelcomeStroke.BackColor = ColorTranslator.FromHtml("#959595");
+            SetLabelColors(lblOptionsWelcome, lblOptionsWelcomeStroke);
+            SetLabelColors(lblOption1, lblOption1Stroke);
+            SetLabelColors(lblOption2, lblOption2Stroke);
+            SetLabelColors(lblOption3, lblOption3Stroke);
+            SetLabelColors(lblOption4, lblOption4Stroke);
+            SetLabelColors(lblOption5, lblOption5Stroke);
+            SetLabelColors(lblOption6, lblOption6Stroke);
+            SetLabelColors(lblOption7, lblOption7Stroke);
+            SetLabelColors(lblOption8, lblOption8Stroke);
+            SetLabelColors(lblOption9, lblOption9Stroke);
+            SetLabelColors(lblOption10, lblOption10Stroke);
+            SetLabelColors(lblOption1Name, lblOption1NameStroke);
+            SetLabelColors(lblOption2Name, lblOption2NameStroke);
+            SetLabelColors(lblOption3Name, lblOption3NameStroke);
+            SetLabelColors(lblOption4Name, lblOption4NameStroke);
+            SetLabelColors(lblOption5Name, lblOption5NameStroke);
+            SetLabelColors(lblOption6Name, lblOption6NameStroke);
+            SetLabelColors(lblOption7Name, lblOption7NameStroke);
+            SetLabelColors(lblOption8Name, lblOption8NameStroke);
+            SetLabelColors(lblOption9Name, lblOption9NameStroke);
+            SetLabelColors(lblOption10Name, lblOption10NameStroke);
 
-            lblOption1.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption1.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption1.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption1Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption1Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption1Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption1Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption1Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption1NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption1NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption2.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption2.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption2.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption2Stroke.BackColor = ColorTranslator.FromHtml("#959595"); ;
-            lblOption2Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption2Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption2Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption2Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption2NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption2NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption3.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption3.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption3.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption3Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption3Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption3Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption3Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption3Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption3NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption3NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption4.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption4.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption4.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption4Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption4Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption4Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption4Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption4Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption4NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption4NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption5.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption5.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption5.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption5Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption5Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption5Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption5Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption5Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption5NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption5NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption6.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption6.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption6.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption6Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption6Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption6Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption6Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption6Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption6NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption6NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption7.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption7.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption7.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption7Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption7Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption7Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption7Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption7Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption7NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption7NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption8.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption8.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption8.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption8Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption8Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption8Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption8Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption8Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption8NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption8NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption9.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption9.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption9.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption9Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption9Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption9Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption9Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption9Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption9NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption9NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption10.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption10.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption10.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption10Stroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption10Stroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            lblOption10Name.BackColor = ColorTranslator.FromHtml("#C5B3CC");
-            lblOption10Name.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
-            lblOption10Name.Font = new Font("Helvetica", lblWelcome.Font.Size);
-            lblOption10NameStroke.BackColor = ColorTranslator.FromHtml("#959595");
-            lblOption10NameStroke.Font = new Font("Helvetica", lblWelcome.Font.Size);
-
-            btnBack.FlatStyle = FlatStyle.Flat;
-            btnBack.FlatAppearance.BorderSize = 3;
-            btnBack.BackColor = ColorTranslator.FromHtml("#B98DA1");
-            btnBack.ForeColor = ColorTranslator.FromHtml("#4C3B43");
-
-            btnDebugRerollText.FlatStyle = FlatStyle.Flat;
-            btnDebugRerollText.FlatAppearance.BorderSize = 3;
-            btnDebugRerollText.BackColor = ColorTranslator.FromHtml("#B98DA1");
-            btnDebugRerollText.ForeColor = ColorTranslator.FromHtml("#4C3B43");
-
-            //Show and Hide Elements for startup
-
-
-            //Set default text [depreciated]
-            lblWelcome.Text = "Welcome in!\r\nHope you're hungry!\r\n\r\nWe have a few options for you to choose from.";
             showFirstPage();
         }
 
+        //When the Roll Option button is clicked,
         private void btnRollOption_Click(object sender, EventArgs e)
         {
-
+            //Display the selection.
             displaySelection();
 
         }
 
+        //When the View Options button is clicked,
         private void btnViewOptions_Click(object sender, EventArgs e)
         {
+            //Show the second page, and hide the first.
             showSecondPage();
         }
         private void displaySelection()
         {
-
+            //Create an array of strings for a varried result each click.
             string[] choiceText = new string[] { "     We've scrubbed all 14,000,605 realities for the best possible outcome.     ", "     We've passed word around the office. We've got something you'll like.     ", "     Every day is an adventure; today especially.     ", "     This option is scientifically proven to cure your frustrations.     ", "     We're excited about this one in particular.     ", "     We outsourced this one to the magic eight ball.     ", "     The heavens parted, and delivered this message:     ", "     Food? This is where you're going to need to go.     ", "     Our cutting edge algorithms have chosen specifically for you.     ", "     The deliciousness from this suggestion almost broke our servers (just kidding. We don't use servers).     " };
 
+            //Start a random number object.
             Random rnd = new Random();
             int i = rnd.Next(0, choiceText.Length);
 
 
-
+            //pick a random string from the choiceText array as an opener, and then display the result.
             lblSelection.Text = choiceText[i] + "\r\n\r\nWe think [Selected Option] is just right today.";
 
+            //Create some helper variables to determine the precice loction the labels need to be at.
             int formWidth = this.Width;
             int perfectOffset = (formWidth - lblSelection.Width) / 2;
 
@@ -361,13 +215,16 @@ namespace What2Eat
             lblSelectionStroke.Visible = true;
         }
 
+        //when the page-2 back button is clicked,
         private void btnBack_Click(object sender, EventArgs e)
         {
+            //Show the first page and hide the second.
             showFirstPage();
 
         }
         private void showFirstPage()
         {
+            //Hide every element on the second page
             lblOptionsWelcome.Visible = false;
             lblOptionsWelcomeStroke.Visible = false;
             btnBack.Visible = false;
@@ -413,6 +270,7 @@ namespace What2Eat
             lblOption10NameStroke.Visible = false;
             btnDebugRerollText.Visible = false;
 
+            //Show every element on the first page
             lblWelcome.Visible = true;
             lblWelcomeStroke.Visible = true;
             btnRollOption.Visible = true;
@@ -420,6 +278,7 @@ namespace What2Eat
         }
         private void showSecondPage()
         {
+            //Hide every element on the first page
             lblWelcome.Visible = false;
             lblWelcomeStroke.Visible = false;
             btnRollOption.Visible = false;
@@ -427,6 +286,7 @@ namespace What2Eat
             lblSelection.Visible = false;
             lblSelectionStroke.Visible = false;
 
+            //Show every element on the second page.
             lblOptionsWelcome.Visible = true;
             lblOptionsWelcomeStroke.Visible = true;
             btnBack.Visible = true;
@@ -472,75 +332,118 @@ namespace What2Eat
             lblOption10NameStroke.Visible = true;
             btnDebugRerollText.Visible = true;
         }
+
         private void AdjustAutoSizeLabelStroke(System.Windows.Forms.Label mainLabel, System.Windows.Forms.Label strokeLabel)
         {
+            //Use the "main" label to set the location and size for the secondary label.
+            //I tried using this for both auto-size true and false labels, for some reason it only works if it's in two different functions?
+            //I think I need another 15 minutes to figure that out and just have one function.
+            //They look like they're doing the exact some thing.
             strokeLabel.Location = new Point(mainLabel.Location.X - 2, mainLabel.Location.Y - 2);
             strokeLabel.Width = mainLabel.Width + 4;
             strokeLabel.Height = mainLabel.Height + 4;
         }
 
+        private void PlaceLabelStroke(System.Windows.Forms.Label mainLabel, System.Windows.Forms.Label strokeLabel)
+        {
+            //Same thing as above.
+            //I have zero clue as to why this wasn't working with auto-size true labels.
+            strokeLabel.Location = new Point(mainLabel.Location.X - 2, mainLabel.Location.Y - 2);
+            strokeLabel.Width = mainLabel.Width + 4;
+            strokeLabel.Height = mainLabel.Height + 4;
+        }
+
+        private void SetLabelColors(System.Windows.Forms.Label mainLabel, System.Windows.Forms.Label strokeLabel)
+        {
+            //Set the label and stroke label colours to match the aesthetic directions.
+            mainLabel.BackColor = ColorTranslator.FromHtml("#C5B3CC");
+            mainLabel.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
+            mainLabel.Font = new Font("Helvetica", lblWelcome.Font.Size);
+            strokeLabel.BackColor = ColorTranslator.FromHtml("#959595");
+            strokeLabel.Font = new Font("Helvetica", lblWelcome.Font.Size);
+        }
+        private void SetButtonColors(System.Windows.Forms.Button button)
+        {
+            //Set the button colours to match the aesthetic directions.
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 3;
+            button.BackColor = ColorTranslator.FromHtml("#B98DA1");
+            button.ForeColor = ColorTranslator.FromHtml("#4C3B43");
+        }
+
         private void btnDebugRerollText_Click(object sender, EventArgs e)
         {
+            //Create a 2D to store the restaurant list
+            string[,] Restaurants = new string[7, 7];
+            //Populate the option "genre's"
+            Restaurants[0, 0] = "Asian";
+            Restaurants[1, 0] = "Fast Food";
+            Restaurants[2, 0] = "Mexican";
+            Restaurants[3, 0] = "Seafood";
+            Restaurants[4, 0] = "Dessert";
+            Restaurants[5, 0] = "Italian";
+            Restaurants[6, 0] = "Pizza";
+
+            //Populate the restaurant names for each of the categories
+
+            Restaurants[0, 1] = "Panda Express";
+            Restaurants[0, 2] = "Noodles && Company";
+            Restaurants[0, 3] = "Buffet King";
+            Restaurants[0, 4] = "Wasabi Wok";
+            Restaurants[0, 5] = "The Great Wall";
+            Restaurants[0, 6] = "Coco China";
+
+            Restaurants[1, 1] = "McDonalds";
+            Restaurants[1, 2] = "Burger King";
+            Restaurants[1, 3] = "Arbys";
+            Restaurants[1, 4] = "Wendy's";
+            Restaurants[1, 5] = "Subway";
+
+            Restaurants[2, 1] = "Taco Bell";
+            Restaurants[2, 2] = "Taco Casa";
+            Restaurants[2, 3] = "Casa Torres";
+            Restaurants[2, 4] = "Dos Chiles";
+
+            Restaurants[3, 1] = "Long John Silvers";
+            Restaurants[3, 2] = "Zeke's Fish And Chips";
+
+            Restaurants[4, 1] = "Dairy Queen";
+            Restaurants[4, 2] = "Braums";
+
+            Restaurants[5, 1] = "Olive Garden";
+            Restaurants[5, 2] = "Fazolis";
+
+            Restaurants[6, 1] = "Pizza Hut";
+            Restaurants[6, 2] = "Papa Johns";
+            Restaurants[6, 3] = "Dominos";
+            Restaurants[6, 4] = "Hungry Howies";
+            Restaurants[6, 5] = "Little Caesars";
+            Restaurants[6, 6] = "Cici's Pizza";
+
+            //Create an array to store the option names for the label text randomizer (note that it does not contain category names)
             string[] optionNameStrings = new string[]
             {
-                /*"Option 1",
-                "A generic option.",
-                "This is option 3.",
-                "Short option.",
-                "A long option with more text",
-                "Option number 6.",
-                "Option 7 here",
-                "We have room for Option 8",
-                "Another option",
-                "Option 10 with extra text.",
-                "Option 11 can go here.",
-                "Option 12 can go here if you would like",
-                "Option 13 is a great choice.",
-                "Option 14 with a lot of text",
-                "Short",
-                "Option 16 isn't particularly long.",
-                "Option 17 with additional text",
-                "Option 18 is a great one too",
-                "Option 19 will knock your socks off here.",
-                "A very long option with a lot of text to make it longer than the others",
-                "Option 21 is different",
-                "Option 22 is also different",
-                "Option 23 is quite long",
-                "Option 24 is unique",
-                "Option 25 can have a really long name, but not longer than 20.",
-                "Option 26 is definitely not the longest option that we have.",
-                "Option 27 is a weird one. Kinda like My parent's dog Charlie. She's a cutie.",
-                "Option 28 short",
-                "Option 29 is pretty crazy. It's kinda up there in length.",
-                "The last option!"*/
-                Restaurants[0, 0],
-                Restaurants[1, 0],
-                Restaurants[2, 0],
-                Restaurants[3, 0],
-                Restaurants[4, 0],
-                Restaurants[5, 0],
-                Restaurants[6, 0],
                 Restaurants[0, 1],
                 Restaurants[0, 2],
                 Restaurants[0, 3],
                 Restaurants[0, 4],
                 Restaurants[0, 5],
-                Restaurants[0, 6],            
+                Restaurants[0, 6],
                 Restaurants[1, 1],
                 Restaurants[1, 2],
                 Restaurants[1, 3],
                 Restaurants[1, 4],
-                Restaurants[1, 5],           
+                Restaurants[1, 5],
                 Restaurants[2, 1],
                 Restaurants[2, 2],
                 Restaurants[2, 3],
-                Restaurants[2, 4],         
+                Restaurants[2, 4],
                 Restaurants[3, 1],
-                Restaurants[3, 2],          
+                Restaurants[3, 2],
                 Restaurants[4, 1],
-                Restaurants[4, 2],          
+                Restaurants[4, 2],
                 Restaurants[5, 1],
-                Restaurants[5, 2],           
+                Restaurants[5, 2],
                 Restaurants[6, 1],
                 Restaurants[6, 2],
                 Restaurants[6, 3],
@@ -548,7 +451,9 @@ namespace What2Eat
                 Restaurants[6, 5],
                 Restaurants[6, 6],
             };
+            //Create a random number object
             Random rnd = new Random();
+            //Store a random selection from the Restaraunt array above into a temp variable. Makes sure each entry is unique.
             int i1 = rnd.Next(0, optionNameStrings.Length);
             int i = rnd.Next(0, optionNameStrings.Length);
             while (i == i1)
@@ -578,6 +483,7 @@ namespace What2Eat
             while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5) || (i == i6) || (i == i7) || (i == i8) || (i == i9))
                 i = rnd.Next(0, optionNameStrings.Length);
             int i10 = i;
+            //Assign label text to the option name in their associated variable.
             lblOption1Name.Text = optionNameStrings[i1];
             lblOption2Name.Text = optionNameStrings[i2];
             lblOption3Name.Text = optionNameStrings[i3];
