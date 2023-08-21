@@ -77,7 +77,10 @@
             lblOptionsWelcomeStroke = new Label();
             lblOption1Name = new Label();
             lblOption1NameStroke = new Label();
-            btnDebugRerollText = new Button();
+            btnRemoveOptions = new Button();
+            btnAddOptions = new Button();
+            txtInput = new TextBox();
+            btnConfirm = new Button();
             SuspendLayout();
             // 
             // lblWelcome
@@ -524,22 +527,52 @@
             lblOption1NameStroke.TabIndex = 52;
             lblOption1NameStroke.Text = "Option 1:";
             // 
-            // btnDebugRerollText
+            // btnRemoveOptions
             // 
-            btnDebugRerollText.Location = new Point(628, 178);
-            btnDebugRerollText.Name = "btnDebugRerollText";
-            btnDebugRerollText.Size = new Size(94, 36);
-            btnDebugRerollText.TabIndex = 53;
-            btnDebugRerollText.Text = "Reroll Text";
-            btnDebugRerollText.UseVisualStyleBackColor = true;
-            btnDebugRerollText.Click += btnDebugRerollText_Click;
+            btnRemoveOptions.Location = new Point(591, 162);
+            btnRemoveOptions.Name = "btnRemoveOptions";
+            btnRemoveOptions.Size = new Size(139, 36);
+            btnRemoveOptions.TabIndex = 53;
+            btnRemoveOptions.Text = "Remove Option";
+            btnRemoveOptions.UseVisualStyleBackColor = true;
+            btnRemoveOptions.Click += btnRemoveOption;
+            // 
+            // btnAddOptions
+            // 
+            btnAddOptions.Location = new Point(591, 225);
+            btnAddOptions.Name = "btnAddOptions";
+            btnAddOptions.Size = new Size(139, 36);
+            btnAddOptions.TabIndex = 54;
+            btnAddOptions.Text = "Add Option";
+            btnAddOptions.UseVisualStyleBackColor = true;
+            btnAddOptions.Click += btnAddOptions_Click;
+            // 
+            // txtInput
+            // 
+            txtInput.Location = new Point(104, 294);
+            txtInput.Name = "txtInput";
+            txtInput.Size = new Size(266, 27);
+            txtInput.TabIndex = 55;
+            // 
+            // btnConfirm
+            // 
+            btnConfirm.Location = new Point(611, 331);
+            btnConfirm.Name = "btnConfirm";
+            btnConfirm.Size = new Size(139, 36);
+            btnConfirm.TabIndex = 56;
+            btnConfirm.Text = "Save Option";
+            btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Click += btnConfirm_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(798, 440);
-            Controls.Add(btnDebugRerollText);
+            Controls.Add(btnConfirm);
+            Controls.Add(txtInput);
+            Controls.Add(btnAddOptions);
+            Controls.Add(btnRemoveOptions);
             Controls.Add(lblOption1Name);
             Controls.Add(lblOptionsWelcome);
             Controls.Add(btnBack);
@@ -648,6 +681,9 @@
         private Label lblOptionsWelcomeStroke;
         private Label lblOption1Name;
         private Label lblOption1NameStroke;
-        private Button btnDebugRerollText;
+        private Button btnRemoveOptions;
+        private Button btnAddOptions;
+        private TextBox txtInput;
+        private Button btnConfirm;
     }
 }

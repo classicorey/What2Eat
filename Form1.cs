@@ -13,7 +13,21 @@ namespace What2Eat
         public Form1()
         {
             InitializeComponent();
+
+            lblOption1Name.Text = String.Empty;
+            lblOption2Name.Text = String.Empty;
+            lblOption3Name.Text = String.Empty;
+            lblOption4Name.Text = String.Empty;
+            lblOption5Name.Text = String.Empty;
+            lblOption6Name.Text = String.Empty;
+            lblOption7Name.Text = String.Empty;
+            lblOption8Name.Text = String.Empty;
+            lblOption9Name.Text = String.Empty;
+            lblOption10Name.Text = String.Empty;
+
+
             this.Text = "What2Eat";
+            lblWelcome.Text = "Welcome in!\nHope you're hungry!\n\nLet's get you something to eat.";
             //Place first screen elements in their proper places
             //    put the welcome message, the selection message, and the buttons at their correct heights on screen.
             lblWelcome.Top = this.Top + 30;
@@ -33,11 +47,11 @@ namespace What2Eat
             btnViewOptions.Left = perfectOffset + btnRollOption.Width + 6;
 
             //Place second screen elements into their proper places
-            //    This part's a little jumbled compared to the first screen. I plan on re-organizing it to make this more readable.
-            //    Center the welcome message
+            //  This part's a little jumbled compared to the first screen. I plan on re-organizing it to make this more readable.
+            //  Center the welcome message
             perfectOffset = (this.Width - lblOptionsWelcome.Width) / 2;
             lblOptionsWelcome.Left = perfectOffset;
-            // Place the stroke label accordingly
+            //  Place the stroke label accordingly
             PlaceLabelStroke(lblOptionsWelcome, lblOptionsWelcomeStroke);
             //    Set the back button's X coord properly.
             btnBack.Left = (perfectOffset / 2) - (btnBack.Width / 2);
@@ -48,8 +62,10 @@ namespace What2Eat
             //    Place the stoke label where it needs to go.
             PlaceLabelStroke(lblOption1, lblOption1Stroke);
             //    Place the Reroll Text Button where it needs to go using the welcome message, and back button's location
-            btnDebugRerollText.Left = this.Width - (perfectOffset / 2) - (btnDebugRerollText.Width / 2);
-            btnDebugRerollText.Top = btnBack.Top;
+            btnRemoveOptions.Left = this.Width - (perfectOffset / 2) - (btnRemoveOptions.Width / 2);
+            btnRemoveOptions.Top = btnBack.Top - btnRemoveOptions.Height;
+            btnAddOptions.Top = btnBack.Top + btnAddOptions.Height;
+            btnAddOptions.Left = btnRemoveOptions.Left;
 
             //    Set two variables to control the spacing vertically and horizontally between the option labels.
             //        change once, change many.
@@ -136,6 +152,14 @@ namespace What2Eat
             lblOption10Name.Top = lblOption10.Top;
             lblOption10Name.SizeChanged += (s, ev) => AdjustAutoSizeLabelStroke(lblOption10Name, lblOption10NameStroke);
 
+            perfectOffset = lblOptionsWelcome.Left + ((lblOptionsWelcome.Width - txtInput.Width) / 2);
+            txtInput.Left = perfectOffset;
+            txtInput.Top = lblOption3.Top;
+
+            perfectOffset = txtInput.Left + ((txtInput.Width - btnConfirm.Width) / 2);
+            btnConfirm.Left = perfectOffset;
+            btnConfirm.Top = lblOption7.Top;
+
             //Set the form color to the decided upon value.
             this.BackColor = ColorTranslator.FromHtml("#CCBFCA");
 
@@ -147,8 +171,6 @@ namespace What2Eat
 
             SetButtonColors(btnRollOption);
             SetButtonColors(btnViewOptions);
-            SetButtonColors(btnBack);
-            SetButtonColors(btnDebugRerollText);
 
             //Set aesthetic properties for second screen elements
             SetLabelColors(lblOptionsWelcome, lblOptionsWelcomeStroke);
@@ -173,6 +195,15 @@ namespace What2Eat
             SetLabelColors(lblOption9Name, lblOption9NameStroke);
             SetLabelColors(lblOption10Name, lblOption10NameStroke);
 
+            SetButtonColors(btnBack);
+            SetButtonColors(btnRemoveOptions);
+            SetButtonColors(btnAddOptions);
+            SetButtonColors(btnConfirm);
+
+            txtInput.BackColor = ColorTranslator.FromHtml("#C5B3CC");
+            txtInput.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
+            txtInput.Font = new Font("Helvetica", lblWelcome.Font.Size);
+
             showFirstPage();
         }
 
@@ -187,21 +218,81 @@ namespace What2Eat
         //When the View Options button is clicked,
         private void btnViewOptions_Click(object sender, EventArgs e)
         {
+
+            lblWelcome.Text = "Welcome in!\nHope you're hungry!\n\nLet's get you something to eat.";
             //Show the second page, and hide the first.
             showSecondPage();
         }
         private void displaySelection()
         {
+            if (lblOption1Name.Text == string.Empty)
+            {
+                lblWelcome.Text = "You don't have options recorded. \nView your options to add one.";
+                return;
+            }
             //Create an array of strings for a varried result each click.
-            string[] choiceText = new string[] { "     We've scrubbed all 14,000,605 realities for the best possible outcome.     ", "     We've passed word around the office. We've got something you'll like.     ", "     Every day is an adventure; today especially.     ", "     This option is scientifically proven to cure your frustrations.     ", "     We're excited about this one in particular.     ", "     We outsourced this one to the magic eight ball.     ", "     The heavens parted, and delivered this message:     ", "     Food? This is where you're going to need to go.     ", "     Our cutting edge algorithms have chosen specifically for you.     ", "     The deliciousness from this suggestion almost broke our servers (just kidding. We don't use servers).     " };
+            string[] choiceText = new string[] { 
+                "     We've scrubbed all 14,000,605 realities for the best possible outcome.     ", 
+                "     We've passed word around the office. We've got something you'll like.     ", 
+                "     Every day is an adventure; today especially.     ", 
+                "     This option is scientifically proven to cure your frustrations.     ", 
+                "     We're excited about this one in particular.     ", 
+                "     We outsourced this one to the magic eight ball.     ", 
+                "     The heavens parted, and delivered this message:     ", 
+                "     Food? This is where you're going to need to go.     ", 
+                "     Our cutting edge algorithms have chosen specifically for you.     ", 
+                "     The deliciousness from this suggestion almost broke our servers (just kidding. We don't use servers).     " 
+            };
 
             //Start a random number object.
             Random rnd = new Random();
             int i = rnd.Next(0, choiceText.Length);
+            string chosenIntro = choiceText[i];
 
 
+            string filePath = @"restaraunts.txt";
+            string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
+            File.WriteAllText(filePath, maxFileContents);
+            string chosenText = "";
+            while (chosenText == "")
+            {
+                i = rnd.Next(0, 9);
+                switch (i)
+                {
+                    case 0:
+                        chosenText = lblOption1Name.Text;
+                        break;
+                    case 1:
+                        chosenText = lblOption2Name.Text;
+                        break;
+                    case 2:
+                        chosenText = lblOption3Name.Text;
+                        break;
+                    case 3:
+                        chosenText = lblOption4Name.Text;
+                        break;
+                    case 4:
+                        chosenText = lblOption5Name.Text;
+                        break;
+                    case 5:
+                        chosenText = lblOption6Name.Text;
+                        break;
+                    case 6:
+                        chosenText = lblOption7Name.Text;
+                        break;
+                    case 7:
+                        chosenText = lblOption8Name.Text;
+                        break;
+                    case 8:
+                        chosenText = lblOption9Name.Text;
+                        break;
+                    case 9:
+                        chosenText = lblOption10Name.Text;
+                        break;
+                }
+            }
             //pick a random string from the choiceText array as an opener, and then display the result.
-            lblSelection.Text = choiceText[i] + "\r\n\r\nWe think [Selected Option] is just right today.";
+            lblSelection.Text = chosenIntro + "\r\n\r\nWe think " + chosenText + " is the right call today.";
 
             //Create some helper variables to determine the precice loction the labels need to be at.
             int formWidth = this.Width;
@@ -268,13 +359,17 @@ namespace What2Eat
             lblOption8NameStroke.Visible = false;
             lblOption9NameStroke.Visible = false;
             lblOption10NameStroke.Visible = false;
-            btnDebugRerollText.Visible = false;
+            btnRemoveOptions.Visible = false;
+            btnAddOptions.Visible = false;
+            txtInput.Visible = false;
+            btnConfirm.Visible = false;
 
             //Show every element on the first page
             lblWelcome.Visible = true;
             lblWelcomeStroke.Visible = true;
             btnRollOption.Visible = true;
             btnViewOptions.Visible = true;
+            populateOptionLabels();
         }
         private void showSecondPage()
         {
@@ -285,6 +380,8 @@ namespace What2Eat
             btnViewOptions.Visible = false;
             lblSelection.Visible = false;
             lblSelectionStroke.Visible = false;
+            txtInput.Visible = false;
+            btnConfirm.Visible = false;
 
             //Show every element on the second page.
             lblOptionsWelcome.Visible = true;
@@ -330,7 +427,67 @@ namespace What2Eat
             lblOption8NameStroke.Visible = true;
             lblOption9NameStroke.Visible = true;
             lblOption10NameStroke.Visible = true;
-            btnDebugRerollText.Visible = true;
+            btnRemoveOptions.Visible = true;
+            btnAddOptions.Visible = true;
+
+            populateOptionLabels();
+        }
+        private void populateOptionLabels()
+        {
+            string filePath = @"restaraunts.txt";
+            List<string> lines = new List<string>();
+            lines = File.ReadAllLines(filePath).ToList();
+            string fileContents = lines[0];
+
+            foreach (string line in lines)
+            {
+                int i = 1;
+                String[] parts = line.Split(',');
+                //Console.WriteLine(line);
+                foreach (string part in parts)
+                {
+                    if (part != "")
+                    {
+                        switch (i)
+                        {
+                            case 1:
+                                lblOption1Name.Text = part;
+                                break;
+                            case 2:
+                                lblOption2Name.Text = part;
+                                break;
+                            case 3:
+                                lblOption3Name.Text = part;
+                                break;
+                            case 4:
+                                lblOption4Name.Text = part;
+                                break;
+                            case 5:
+                                lblOption5Name.Text = part;
+                                break;
+                            case 6:
+                                lblOption6Name.Text = part;
+                                break;
+                            case 7:
+                                lblOption7Name.Text = part;
+                                break;
+                            case 8:
+                                lblOption8Name.Text = part;
+                                break;
+                            case 9:
+                                lblOption9Name.Text = part;
+                                break;
+                            case 10:
+                                lblOption10Name.Text = part;
+                                break;
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
+            File.WriteAllText(filePath, maxFileContents);
         }
 
         private void AdjustAutoSizeLabelStroke(System.Windows.Forms.Label mainLabel, System.Windows.Forms.Label strokeLabel)
@@ -371,129 +528,282 @@ namespace What2Eat
             button.ForeColor = ColorTranslator.FromHtml("#4C3B43");
         }
 
-        private void btnDebugRerollText_Click(object sender, EventArgs e)
+        private void btnRemoveOption(object sender, EventArgs e)
         {
-            //Create a 2D to store the restaurant list
-            string[,] Restaurants = new string[7, 7];
-            //Populate the option "genre's"
-            Restaurants[0, 0] = "Asian";
-            Restaurants[1, 0] = "Fast Food";
-            Restaurants[2, 0] = "Mexican";
-            Restaurants[3, 0] = "Seafood";
-            Restaurants[4, 0] = "Dessert";
-            Restaurants[5, 0] = "Italian";
-            Restaurants[6, 0] = "Pizza";
-
-            //Populate the restaurant names for each of the categories
-
-            Restaurants[0, 1] = "Panda Express";
-            Restaurants[0, 2] = "Noodles && Company";
-            Restaurants[0, 3] = "Buffet King";
-            Restaurants[0, 4] = "Wasabi Wok";
-            Restaurants[0, 5] = "The Great Wall";
-            Restaurants[0, 6] = "Coco China";
-
-            Restaurants[1, 1] = "McDonalds";
-            Restaurants[1, 2] = "Burger King";
-            Restaurants[1, 3] = "Arbys";
-            Restaurants[1, 4] = "Wendy's";
-            Restaurants[1, 5] = "Subway";
-
-            Restaurants[2, 1] = "Taco Bell";
-            Restaurants[2, 2] = "Taco Casa";
-            Restaurants[2, 3] = "Casa Torres";
-            Restaurants[2, 4] = "Dos Chiles";
-
-            Restaurants[3, 1] = "Long John Silvers";
-            Restaurants[3, 2] = "Zeke's Fish And Chips";
-
-            Restaurants[4, 1] = "Dairy Queen";
-            Restaurants[4, 2] = "Braums";
-
-            Restaurants[5, 1] = "Olive Garden";
-            Restaurants[5, 2] = "Fazolis";
-
-            Restaurants[6, 1] = "Pizza Hut";
-            Restaurants[6, 2] = "Papa Johns";
-            Restaurants[6, 3] = "Dominos";
-            Restaurants[6, 4] = "Hungry Howies";
-            Restaurants[6, 5] = "Little Caesars";
-            Restaurants[6, 6] = "Cici's Pizza";
-
-            //Create an array to store the option names for the label text randomizer (note that it does not contain category names)
-            string[] optionNameStrings = new string[]
+            if (lblOption1Name.Text == String.Empty)
             {
-                Restaurants[0, 1],
-                Restaurants[0, 2],
-                Restaurants[0, 3],
-                Restaurants[0, 4],
-                Restaurants[0, 5],
-                Restaurants[0, 6],
-                Restaurants[1, 1],
-                Restaurants[1, 2],
-                Restaurants[1, 3],
-                Restaurants[1, 4],
-                Restaurants[1, 5],
-                Restaurants[2, 1],
-                Restaurants[2, 2],
-                Restaurants[2, 3],
-                Restaurants[2, 4],
-                Restaurants[3, 1],
-                Restaurants[3, 2],
-                Restaurants[4, 1],
-                Restaurants[4, 2],
-                Restaurants[5, 1],
-                Restaurants[5, 2],
-                Restaurants[6, 1],
-                Restaurants[6, 2],
-                Restaurants[6, 3],
-                Restaurants[6, 4],
-                Restaurants[6, 5],
-                Restaurants[6, 6],
-            };
-            //Create a random number object
-            Random rnd = new Random();
-            //Store a random selection from the Restaraunt array above into a temp variable. Makes sure each entry is unique.
-            int i1 = rnd.Next(0, optionNameStrings.Length);
-            int i = rnd.Next(0, optionNameStrings.Length);
-            while (i == i1)
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i2 = i;
-            while ((i == i1) || (i == i2))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i3 = i;
-            while ((i == i1) || (i == i2) || (i == i3))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i4 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i5 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i6 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5) || (i == i6))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i7 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5) || (i == i6) || (i == i7))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i8 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5) || (i == i6) || (i == i7) || (i == i8))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i9 = i;
-            while ((i == i1) || (i == i2) || (i == i3) || (i == i4) || (i == i5) || (i == i6) || (i == i7) || (i == i8) || (i == i9))
-                i = rnd.Next(0, optionNameStrings.Length);
-            int i10 = i;
-            //Assign label text to the option name in their associated variable.
-            lblOption1Name.Text = optionNameStrings[i1];
-            lblOption2Name.Text = optionNameStrings[i2];
-            lblOption3Name.Text = optionNameStrings[i3];
-            lblOption4Name.Text = optionNameStrings[i4];
-            lblOption5Name.Text = optionNameStrings[i5];
-            lblOption6Name.Text = optionNameStrings[i6];
-            lblOption7Name.Text = optionNameStrings[i7];
-            lblOption8Name.Text = optionNameStrings[i8];
-            lblOption9Name.Text = optionNameStrings[i9];
-            lblOption10Name.Text = optionNameStrings[i10];
+                lblOptionsWelcome.Text = "You need to add at least one option.";
+                return;
+            }
+
+            if (lblOption10Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption10Name.Text);
+                return;
+            }
+
+            if (lblOption9Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption9Name.Text);
+                return;
+            }
+
+            if (lblOption8Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption8Name.Text);
+                return;
+            }
+
+            if (lblOption7Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption7Name.Text);
+                return;
+            }
+
+            if (lblOption6Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption6Name.Text);
+                return;
+            }
+
+            if (lblOption5Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption5Name.Text);
+                return;
+            }
+
+            if (lblOption4Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption4Name.Text);
+                return;
+            }
+
+            if (lblOption3Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption3Name.Text);
+                return;
+            }
+
+            if (lblOption2Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption2Name.Text);
+                return;
+            }
+
+            if (lblOption1Name.Text != String.Empty)
+            {
+                deleteFromFile(lblOption1Name.Text);
+                return;
+            }
+        }
+        private void btnAddOptions_Click(object sender, EventArgs e)
+        {
+            lblOption1.Visible = false;
+            lblOption2.Visible = false;
+            lblOption3.Visible = false;
+            lblOption4.Visible = false;
+            lblOption5.Visible = false;
+            lblOption6.Visible = false;
+            lblOption7.Visible = false;
+            lblOption8.Visible = false;
+            lblOption9.Visible = false;
+            lblOption10.Visible = false;
+            lblOption1Stroke.Visible = false;
+            lblOption2Stroke.Visible = false;
+            lblOption3Stroke.Visible = false;
+            lblOption4Stroke.Visible = false;
+            lblOption5Stroke.Visible = false;
+            lblOption6Stroke.Visible = false;
+            lblOption7Stroke.Visible = false;
+            lblOption8Stroke.Visible = false;
+            lblOption9Stroke.Visible = false;
+            lblOption10Stroke.Visible = false;
+            lblOption1Name.Visible = false;
+            lblOption2Name.Visible = false;
+            lblOption3Name.Visible = false;
+            lblOption4Name.Visible = false;
+            lblOption5Name.Visible = false;
+            lblOption6Name.Visible = false;
+            lblOption7Name.Visible = false;
+            lblOption8Name.Visible = false;
+            lblOption9Name.Visible = false;
+            lblOption10Name.Visible = false;
+            lblOption1NameStroke.Visible = false;
+            lblOption2NameStroke.Visible = false;
+            lblOption3NameStroke.Visible = false;
+            lblOption4NameStroke.Visible = false;
+            lblOption5NameStroke.Visible = false;
+            lblOption6NameStroke.Visible = false;
+            lblOption7NameStroke.Visible = false;
+            lblOption8NameStroke.Visible = false;
+            lblOption9NameStroke.Visible = false;
+            lblOption10NameStroke.Visible = false;
+
+            lblOptionsWelcome.Text = "Type the name of the restaraunt to add below.\nLong Names get cut off.";
+            txtInput.Visible = true;
+            btnConfirm.Visible = true;
+        }
+
+        private void deleteFromFile(string optionToDelete)
+        {
+            lblOption1Name.Text = String.Empty;
+            lblOption2Name.Text = String.Empty;
+            lblOption3Name.Text = String.Empty;
+            lblOption4Name.Text = String.Empty;
+            lblOption5Name.Text = String.Empty;
+            lblOption6Name.Text = String.Empty;
+            lblOption7Name.Text = String.Empty;
+            lblOption8Name.Text = String.Empty;
+            lblOption9Name.Text = String.Empty;
+            lblOption10Name.Text = String.Empty;
+
+            string filePath = @"restaraunts.txt";
+            List<string> lines = new List<string>();
+            lines = File.ReadAllLines(filePath).ToList();
+            string fileContents = lines[0];
+
+            foreach (string line in lines)
+            {
+                int i = 1;
+                String[] parts = line.Split(',');
+                //Console.WriteLine(line);
+                foreach (string part in parts)
+                {
+                    if (part != "" && part != optionToDelete)
+                    {
+                        switch (i)
+                        {
+                            case 1:
+                                lblOption1Name.Text = part;
+                                break;
+                            case 2:
+                                lblOption2Name.Text = part;
+                                break;
+                            case 3:
+                                lblOption3Name.Text = part;
+                                break;
+                            case 4:
+                                lblOption4Name.Text = part;
+                                break;
+                            case 5:
+                                lblOption5Name.Text = part;
+                                break;
+                            case 6:
+                                lblOption6Name.Text = part;
+                                break;
+                            case 7:
+                                lblOption7Name.Text = part;
+                                break;
+                            case 8:
+                                lblOption8Name.Text = part;
+                                break;
+                            case 9:
+                                lblOption9Name.Text = part;
+                                break;
+                            case 10:
+                                lblOption10Name.Text = part;
+                                break;
+                        }
+                    }
+                    i++;
+                }
+            }
+            string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
+            File.WriteAllText(filePath, maxFileContents);
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            int maxStringLength = 60;
+            bool textAdded = false;
+
+            if (txtInput.Text.Length > maxStringLength)
+            {
+                lblOptionsWelcome.Text = "We can't allow more than " + maxStringLength + " characters in a name.\nYou're currently at " + txtInput.Text.Length + " characters.";
+                return;
+            }
+
+            if (txtInput.Text.Contains(","))
+            {
+                lblOptionsWelcome.Text = "Unfortunately your restaraunt has a comma in it.\nThat seriously messes up our list.\nPlease don't give us commas.";
+                return;
+            }
+
+            if (lblOption10Name.Text != String.Empty && textAdded == false)
+            {
+                lblOptionsWelcome.Text = "You already have the maximum number of options.";
+                textAdded = true;
+            }
+
+            if (lblOption1Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption1Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption2Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption2Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption3Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption3Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption4Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption4Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption5Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption5Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption6Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption6Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption7Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption7Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption8Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption8Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption9Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption9Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            if (lblOption10Name.Text == String.Empty && textAdded == false)
+            {
+                lblOption10Name.Text = txtInput.Text;
+                textAdded = true;
+            }
+
+            btnConfirm.Visible = false;
+            txtInput.Visible = false;
+            showSecondPage();
+            string filePath = @"restaraunts.txt";
+            string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
+            File.WriteAllText(filePath, maxFileContents);
+            lblOptionsWelcome.Text = "Hey there! Feel free to make some edits here!";
         }
     }
 }
+//gamer time
+
