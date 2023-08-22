@@ -292,7 +292,7 @@ namespace What2Eat
                 }
             }
             //pick a random string from the choiceText array as an opener, and then display the result.
-            lblSelection.Text = chosenIntro + "\r\n\r\nWe think " + chosenText + " is the right call today.";
+            lblSelection.Text = chosenIntro + "\r\n\r\n     We think " + chosenText + " is the right call today.     ";
 
             //Create some helper variables to determine the precice loction the labels need to be at.
             int formWidth = this.Width;
