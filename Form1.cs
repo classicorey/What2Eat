@@ -14,6 +14,7 @@ namespace What2Eat
         {
             InitializeComponent();
 
+            //Empty the Option names in case there was an error.
             lblOption1Name.Text = String.Empty;
             lblOption2Name.Text = String.Empty;
             lblOption3Name.Text = String.Empty;
@@ -163,6 +164,28 @@ namespace What2Eat
             //Set the form color to the decided upon value.
             this.BackColor = ColorTranslator.FromHtml("#CCBFCA");
 
+            //Set the tops and rights for the 'remove option' buttons
+            btnRemoveOption1.Top = lblOption1.Top;
+            btnRemoveOption1.Left = lblOption1.Left;
+            //Set the locations of the other buttons using inherritance from the previous
+            setButtonLocations(btnRemoveOption1, btnRemoveOption2);
+            setButtonLocations(btnRemoveOption2, btnRemoveOption3);
+            setButtonLocations(btnRemoveOption3, btnRemoveOption4);
+            setButtonLocations(btnRemoveOption4, btnRemoveOption5);
+            //manually set the next button location to create a new row.
+            btnRemoveOption6.Left = btnRemoveOption1.Left;
+            btnRemoveOption6.Top = btnRemoveOption1.Top + btnRemoveOption6.Height + 10;
+            //Set the locations of the other buttons using inherritance from the previous            
+            setButtonLocations(btnRemoveOption6, btnRemoveOption7);
+            setButtonLocations(btnRemoveOption7, btnRemoveOption8);
+            setButtonLocations(btnRemoveOption8, btnRemoveOption9);
+            setButtonLocations(btnRemoveOption9, btnRemoveOption10);
+
+            //Center and place the "back" button for removing options using the form's height
+            perfectOffset = (this.Width - btnOptionRemoveBack.Width) / 2;
+            btnOptionRemoveBack.Left = perfectOffset;
+            btnOptionRemoveBack.Top = this.Height - btnOptionRemoveBack.Height - 100;
+
             //Set aesthetic properties for first screen elements.
             SetLabelColors(lblWelcome, lblWelcomeStroke);
             lblSelection.Visible = false;
@@ -199,12 +222,23 @@ namespace What2Eat
             SetButtonColors(btnRemoveOptions);
             SetButtonColors(btnAddOptions);
             SetButtonColors(btnConfirm);
+            SetButtonColors(btnRemoveOption1);
+            SetButtonColors(btnRemoveOption2);
+            SetButtonColors(btnRemoveOption3);
+            SetButtonColors(btnRemoveOption4);
+            SetButtonColors(btnRemoveOption5);
+            SetButtonColors(btnRemoveOption6);
+            SetButtonColors(btnRemoveOption7);
+            SetButtonColors(btnRemoveOption8);
+            SetButtonColors(btnRemoveOption9);
+            SetButtonColors(btnRemoveOption10);
+            SetButtonColors(btnOptionRemoveBack);
 
             txtInput.BackColor = ColorTranslator.FromHtml("#C5B3CC");
             txtInput.ForeColor = ColorTranslator.FromHtml("#4F4F4F");
             txtInput.Font = new Font("Helvetica", lblWelcome.Font.Size);
 
-            showFirstPage();
+            pageToFirst();
         }
 
         //When the Roll Option button is clicked,
@@ -221,27 +255,28 @@ namespace What2Eat
 
             lblWelcome.Text = "Welcome in!\nHope you're hungry!\n\nLet's get you something to eat.";
             //Show the second page, and hide the first.
-            showSecondPage();
+            pageToSecond();
+            populateOptionLabels();
         }
         private void displaySelection()
         {
-            if (lblOption1Name.Text == string.Empty)
+            if (isListEmpty() == true)
             {
                 lblWelcome.Text = "You don't have options recorded. \nView your options to add one.";
                 return;
             }
             //Create an array of strings for a varried result each click.
-            string[] choiceText = new string[] { 
-                "     We've scrubbed all 14,000,605 realities for the best possible outcome.     ", 
-                "     We've passed word around the office. We've got something you'll like.     ", 
-                "     Every day is an adventure; today especially.     ", 
-                "     This option is scientifically proven to cure your frustrations.     ", 
-                "     We're excited about this one in particular.     ", 
-                "     We outsourced this one to the magic eight ball.     ", 
-                "     The heavens parted, and delivered this message:     ", 
-                "     Food? This is where you're going to need to go.     ", 
-                "     Our cutting edge algorithms have chosen specifically for you.     ", 
-                "     The deliciousness from this suggestion almost broke our servers (just kidding. We don't use servers).     " 
+            string[] choiceText = new string[] {
+                "     We've scrubbed all 14,000,605 realities for the best possible outcome.     ",
+                "     We've passed word around the office. We've got something you'll like.     ",
+                "     Every day is an adventure; today especially.     ",
+                "     This option is scientifically proven to cure your frustrations.     ",
+                "     We're excited about this one in particular.     ",
+                "     We outsourced this one to the magic eight ball.     ",
+                "     The heavens parted, and delivered this message:     ",
+                "     Food? This is where you're going to need to go.     ",
+                "     Our cutting edge algorithms have chosen specifically for you.     ",
+                "     The deliciousness from this suggestion almost broke our servers (just kidding. We don't use servers).     "
             };
 
             //Start a random number object.
@@ -249,13 +284,15 @@ namespace What2Eat
             int i = rnd.Next(0, choiceText.Length);
             string chosenIntro = choiceText[i];
 
-
+            //Read the file,
             string filePath = @"restaraunts.txt";
             string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
             File.WriteAllText(filePath, maxFileContents);
             string chosenText = "";
+            //While we don't have an option yet (reroll if the option is empty),
             while (chosenText == "")
             {
+                //Choose one randomly.
                 i = rnd.Next(0, 9);
                 switch (i)
                 {
@@ -310,144 +347,30 @@ namespace What2Eat
         private void btnBack_Click(object sender, EventArgs e)
         {
             //Show the first page and hide the second.
-            showFirstPage();
+            pageToFirst();
 
-        }
-        private void showFirstPage()
-        {
-            //Hide every element on the second page
-            lblOptionsWelcome.Visible = false;
-            lblOptionsWelcomeStroke.Visible = false;
-            btnBack.Visible = false;
-            lblOption1.Visible = false;
-            lblOption2.Visible = false;
-            lblOption3.Visible = false;
-            lblOption4.Visible = false;
-            lblOption5.Visible = false;
-            lblOption6.Visible = false;
-            lblOption7.Visible = false;
-            lblOption8.Visible = false;
-            lblOption9.Visible = false;
-            lblOption10.Visible = false;
-            lblOption1Stroke.Visible = false;
-            lblOption2Stroke.Visible = false;
-            lblOption3Stroke.Visible = false;
-            lblOption4Stroke.Visible = false;
-            lblOption5Stroke.Visible = false;
-            lblOption6Stroke.Visible = false;
-            lblOption7Stroke.Visible = false;
-            lblOption8Stroke.Visible = false;
-            lblOption9Stroke.Visible = false;
-            lblOption10Stroke.Visible = false;
-            lblOption1Name.Visible = false;
-            lblOption2Name.Visible = false;
-            lblOption3Name.Visible = false;
-            lblOption4Name.Visible = false;
-            lblOption5Name.Visible = false;
-            lblOption6Name.Visible = false;
-            lblOption7Name.Visible = false;
-            lblOption8Name.Visible = false;
-            lblOption9Name.Visible = false;
-            lblOption10Name.Visible = false;
-            lblOption1NameStroke.Visible = false;
-            lblOption2NameStroke.Visible = false;
-            lblOption3NameStroke.Visible = false;
-            lblOption4NameStroke.Visible = false;
-            lblOption5NameStroke.Visible = false;
-            lblOption6NameStroke.Visible = false;
-            lblOption7NameStroke.Visible = false;
-            lblOption8NameStroke.Visible = false;
-            lblOption9NameStroke.Visible = false;
-            lblOption10NameStroke.Visible = false;
-            btnRemoveOptions.Visible = false;
-            btnAddOptions.Visible = false;
-            txtInput.Visible = false;
-            btnConfirm.Visible = false;
-
-            //Show every element on the first page
-            lblWelcome.Visible = true;
-            lblWelcomeStroke.Visible = true;
-            btnRollOption.Visible = true;
-            btnViewOptions.Visible = true;
-            populateOptionLabels();
-        }
-        private void showSecondPage()
-        {
-            //Hide every element on the first page
-            lblWelcome.Visible = false;
-            lblWelcomeStroke.Visible = false;
-            btnRollOption.Visible = false;
-            btnViewOptions.Visible = false;
-            lblSelection.Visible = false;
-            lblSelectionStroke.Visible = false;
-            txtInput.Visible = false;
-            btnConfirm.Visible = false;
-
-            //Show every element on the second page.
-            lblOptionsWelcome.Visible = true;
-            lblOptionsWelcomeStroke.Visible = true;
-            btnBack.Visible = true;
-            lblOption1.Visible = true;
-            lblOption2.Visible = true;
-            lblOption3.Visible = true;
-            lblOption4.Visible = true;
-            lblOption5.Visible = true;
-            lblOption6.Visible = true;
-            lblOption7.Visible = true;
-            lblOption8.Visible = true;
-            lblOption9.Visible = true;
-            lblOption10.Visible = true;
-            lblOption1Stroke.Visible = true;
-            lblOption2Stroke.Visible = true;
-            lblOption3Stroke.Visible = true;
-            lblOption4Stroke.Visible = true;
-            lblOption5Stroke.Visible = true;
-            lblOption6Stroke.Visible = true;
-            lblOption7Stroke.Visible = true;
-            lblOption8Stroke.Visible = true;
-            lblOption9Stroke.Visible = true;
-            lblOption10Stroke.Visible = true;
-            lblOption1Name.Visible = true;
-            lblOption2Name.Visible = true;
-            lblOption3Name.Visible = true;
-            lblOption4Name.Visible = true;
-            lblOption5Name.Visible = true;
-            lblOption6Name.Visible = true;
-            lblOption7Name.Visible = true;
-            lblOption8Name.Visible = true;
-            lblOption9Name.Visible = true;
-            lblOption10Name.Visible = true;
-            lblOption1NameStroke.Visible = true;
-            lblOption2NameStroke.Visible = true;
-            lblOption3NameStroke.Visible = true;
-            lblOption4NameStroke.Visible = true;
-            lblOption5NameStroke.Visible = true;
-            lblOption6NameStroke.Visible = true;
-            lblOption7NameStroke.Visible = true;
-            lblOption8NameStroke.Visible = true;
-            lblOption9NameStroke.Visible = true;
-            lblOption10NameStroke.Visible = true;
-            btnRemoveOptions.Visible = true;
-            btnAddOptions.Visible = true;
-
-            populateOptionLabels();
         }
         private void populateOptionLabels()
         {
+            //Read the file,
             string filePath = @"restaraunts.txt";
             List<string> lines = new List<string>();
             lines = File.ReadAllLines(filePath).ToList();
             string fileContents = lines[0];
 
+            //For each line in the file
             foreach (string line in lines)
             {
                 int i = 1;
+                //Split it by comma separated values.
                 String[] parts = line.Split(',');
-                //Console.WriteLine(line);
+                //And in each of those parts,
                 foreach (string part in parts)
                 {
+                    //If the section isn't empty,
                     if (part != "")
                     {
+                        //Set each option name to the corresponding thing in the file.
                         switch (i)
                         {
                             case 1:
@@ -486,6 +409,7 @@ namespace What2Eat
                 }
             }
 
+            //Write all the content of the option names to the file, to ensure we only get 10 elements total. We don't need a file leak with 4TB of options we never use.
             string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
             File.WriteAllText(filePath, maxFileContents);
         }
@@ -530,115 +454,30 @@ namespace What2Eat
 
         private void btnRemoveOption(object sender, EventArgs e)
         {
-            if (lblOption1Name.Text == String.Empty)
-            {
-                lblOptionsWelcome.Text = "You need to add at least one option.";
-                return;
-            }
-
-            if (lblOption10Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption10Name.Text);
-                return;
-            }
-
-            if (lblOption9Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption9Name.Text);
-                return;
-            }
-
-            if (lblOption8Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption8Name.Text);
-                return;
-            }
-
-            if (lblOption7Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption7Name.Text);
-                return;
-            }
-
-            if (lblOption6Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption6Name.Text);
-                return;
-            }
-
-            if (lblOption5Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption5Name.Text);
-                return;
-            }
-
-            if (lblOption4Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption4Name.Text);
-                return;
-            }
-
-            if (lblOption3Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption3Name.Text);
-                return;
-            }
-
-            if (lblOption2Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption2Name.Text);
-                return;
-            }
-
-            if (lblOption1Name.Text != String.Empty)
-            {
-                deleteFromFile(lblOption1Name.Text);
-                return;
-            }
+            //Hide the second page,
+            hideSecondPage();
+            //then show the other items for the user to interact with
+            btnRemoveOption1.Visible = true;
+            btnRemoveOption2.Visible = true;
+            btnRemoveOption3.Visible = true;
+            btnRemoveOption4.Visible = true;
+            btnRemoveOption5.Visible = true;
+            btnRemoveOption6.Visible = true;
+            btnRemoveOption7.Visible = true;
+            btnRemoveOption8.Visible = true;
+            btnRemoveOption9.Visible = true;
+            btnRemoveOption10.Visible = true;
+            lblOptionsWelcome.Visible = true;
+            lblOptionsWelcomeStroke.Visible = true;
+            btnOptionRemoveBack.Visible = true;
+            //Set the notif text to tell the user what to do.
+            lblOptionsWelcome.Text = "Which option would you like to delete?";
         }
         private void btnAddOptions_Click(object sender, EventArgs e)
         {
-            lblOption1.Visible = false;
-            lblOption2.Visible = false;
-            lblOption3.Visible = false;
-            lblOption4.Visible = false;
-            lblOption5.Visible = false;
-            lblOption6.Visible = false;
-            lblOption7.Visible = false;
-            lblOption8.Visible = false;
-            lblOption9.Visible = false;
-            lblOption10.Visible = false;
-            lblOption1Stroke.Visible = false;
-            lblOption2Stroke.Visible = false;
-            lblOption3Stroke.Visible = false;
-            lblOption4Stroke.Visible = false;
-            lblOption5Stroke.Visible = false;
-            lblOption6Stroke.Visible = false;
-            lblOption7Stroke.Visible = false;
-            lblOption8Stroke.Visible = false;
-            lblOption9Stroke.Visible = false;
-            lblOption10Stroke.Visible = false;
-            lblOption1Name.Visible = false;
-            lblOption2Name.Visible = false;
-            lblOption3Name.Visible = false;
-            lblOption4Name.Visible = false;
-            lblOption5Name.Visible = false;
-            lblOption6Name.Visible = false;
-            lblOption7Name.Visible = false;
-            lblOption8Name.Visible = false;
-            lblOption9Name.Visible = false;
-            lblOption10Name.Visible = false;
-            lblOption1NameStroke.Visible = false;
-            lblOption2NameStroke.Visible = false;
-            lblOption3NameStroke.Visible = false;
-            lblOption4NameStroke.Visible = false;
-            lblOption5NameStroke.Visible = false;
-            lblOption6NameStroke.Visible = false;
-            lblOption7NameStroke.Visible = false;
-            lblOption8NameStroke.Visible = false;
-            lblOption9NameStroke.Visible = false;
-            lblOption10NameStroke.Visible = false;
-
+            hideSecondPage();
+            //set the UI elements to visible for the user to know what to do.
+            lblOptionsWelcome.Visible = true;
             lblOptionsWelcome.Text = "Type the name of the restaraunt to add below.\nLong Names get cut off.";
             txtInput.Visible = true;
             btnConfirm.Visible = true;
@@ -646,6 +485,7 @@ namespace What2Eat
 
         private void deleteFromFile(string optionToDelete)
         {
+            //Reset all the option names
             lblOption1Name.Text = String.Empty;
             lblOption2Name.Text = String.Empty;
             lblOption3Name.Text = String.Empty;
@@ -657,18 +497,21 @@ namespace What2Eat
             lblOption9Name.Text = String.Empty;
             lblOption10Name.Text = String.Empty;
 
+            //Read the file
             string filePath = @"restaraunts.txt";
             List<string> lines = new List<string>();
             lines = File.ReadAllLines(filePath).ToList();
             string fileContents = lines[0];
 
+            //Split it into CSV's
             foreach (string line in lines)
             {
                 int i = 1;
                 String[] parts = line.Split(',');
-                //Console.WriteLine(line);
+                //For each of those parts,
                 foreach (string part in parts)
                 {
+                    //Write to the option labels to populate them.
                     if (part != "" && part != optionToDelete)
                     {
                         switch (i)
@@ -708,32 +551,34 @@ namespace What2Eat
                     i++;
                 }
             }
+            //Use the option labels to write to the file to ensure uniformity.
             string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
             File.WriteAllText(filePath, maxFileContents);
         }
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            //Add variables to keep track of statisitcs.
             int maxStringLength = 60;
             bool textAdded = false;
 
+            //If the answer has too many letters,
             if (txtInput.Text.Length > maxStringLength)
             {
+                //Tell them to cut it down.
                 lblOptionsWelcome.Text = "We can't allow more than " + maxStringLength + " characters in a name.\nYou're currently at " + txtInput.Text.Length + " characters.";
                 return;
             }
 
+            //If the answer contains a comma, 
             if (txtInput.Text.Contains(","))
             {
+                //Tell them it will mess up our list and re-input the option.
                 lblOptionsWelcome.Text = "Unfortunately your restaraunt has a comma in it.\nThat seriously messes up our list.\nPlease don't give us commas.";
                 return;
             }
 
-            if (lblOption10Name.Text != String.Empty && textAdded == false)
-            {
-                lblOptionsWelcome.Text = "You already have the maximum number of options.";
-                textAdded = true;
-            }
+            //Go through each label, if it is empty and we haven't already added the text, add it here.
 
             if (lblOption1Name.Text == String.Empty && textAdded == false)
             {
@@ -795,15 +640,368 @@ namespace What2Eat
                 textAdded = true;
             }
 
+            //Set visibilities for the user to the next page.
             btnConfirm.Visible = false;
             txtInput.Visible = false;
-            showSecondPage();
+            pageToSecond();
+            //Write out the file to ensure uniformity.
             string filePath = @"restaraunts.txt";
             string maxFileContents = lblOption1Name.Text + "," + lblOption2Name.Text + "," + lblOption3Name.Text + "," + lblOption4Name.Text + "," + lblOption5Name.Text + "," + lblOption6Name.Text + "," + lblOption7Name.Text + "," + lblOption8Name.Text + "," + lblOption9Name.Text + "," + lblOption10Name.Text;
             File.WriteAllText(filePath, maxFileContents);
             lblOptionsWelcome.Text = "Hey there! Feel free to make some edits here!";
         }
+        //btnRemoveOptionX functions are on-click events that will check to see if the restaraunt is empty, and if not it will delete the record there and show the next page.
+        private void btnRemoveOption1_Click(object sender, EventArgs e)
+        {
+            if (lblOption1Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 1.";
+            }
+            else
+            {
+                deleteFromFile(lblOption1Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption2_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption2Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 2.";
+            }
+            else
+            {
+                deleteFromFile(lblOption2Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption3_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption3Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 3.";
+            }
+            else
+            {
+                deleteFromFile(lblOption3Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption4_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption4Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 4.";
+            }
+            else
+            {
+                deleteFromFile(lblOption4Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption5_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption5Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 5.";
+            }
+            else
+            {
+                deleteFromFile(lblOption5Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption6_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption6Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 6.";
+            }
+            else
+            {
+                deleteFromFile(lblOption6Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption7_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption7Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 7.";
+            }
+            else
+            {
+                deleteFromFile(lblOption7Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption8_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption8Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 8.";
+            }
+            else
+            {
+                deleteFromFile(lblOption8Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption9_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption9Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 9.";
+            }
+            else
+            {
+                deleteFromFile(lblOption9Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void btnRemoveOption10_Click(object sender, EventArgs e)
+        {
+
+            if (lblOption10Name.Text == String.Empty)
+            {
+                lblOptionsWelcome.Text = "You don't have any restaraunt in Option 10.";
+            }
+            else
+            {
+                deleteFromFile(lblOption10Name.Text);
+                pageToSecond();
+            }
+        }
+
+        private void setButtonLocations(System.Windows.Forms.Button beforeButton, System.Windows.Forms.Button currentButton)
+        {
+            //set a current putton location using an int spacer, and the previous button's location.
+            int btnHoroizSpacing = beforeButton.Width + 5;
+            currentButton.Top = beforeButton.Top;
+            currentButton.Left = beforeButton.Left + btnHoroizSpacing;
+        }
+
+        private void hideSecondPage()
+        {
+            //Set visibility properties for the second page.
+            lblOptionsWelcome.Visible = false;
+            lblOptionsWelcomeStroke.Visible = false;
+            btnBack.Visible = false;
+            lblOption1.Visible = false;
+            lblOption2.Visible = false;
+            lblOption3.Visible = false;
+            lblOption4.Visible = false;
+            lblOption5.Visible = false;
+            lblOption6.Visible = false;
+            lblOption7.Visible = false;
+            lblOption8.Visible = false;
+            lblOption9.Visible = false;
+            lblOption10.Visible = false;
+            lblOption1Stroke.Visible = false;
+            lblOption2Stroke.Visible = false;
+            lblOption3Stroke.Visible = false;
+            lblOption4Stroke.Visible = false;
+            lblOption5Stroke.Visible = false;
+            lblOption6Stroke.Visible = false;
+            lblOption7Stroke.Visible = false;
+            lblOption8Stroke.Visible = false;
+            lblOption9Stroke.Visible = false;
+            lblOption10Stroke.Visible = false;
+            lblOption1Name.Visible = false;
+            lblOption2Name.Visible = false;
+            lblOption3Name.Visible = false;
+            lblOption4Name.Visible = false;
+            lblOption5Name.Visible = false;
+            lblOption6Name.Visible = false;
+            lblOption7Name.Visible = false;
+            lblOption8Name.Visible = false;
+            lblOption9Name.Visible = false;
+            lblOption10Name.Visible = false;
+            lblOption1NameStroke.Visible = false;
+            lblOption2NameStroke.Visible = false;
+            lblOption3NameStroke.Visible = false;
+            lblOption4NameStroke.Visible = false;
+            lblOption5NameStroke.Visible = false;
+            lblOption6NameStroke.Visible = false;
+            lblOption7NameStroke.Visible = false;
+            lblOption8NameStroke.Visible = false;
+            lblOption9NameStroke.Visible = false;
+            lblOption10NameStroke.Visible = false;
+            btnRemoveOptions.Visible = false;
+            btnAddOptions.Visible = false;
+            txtInput.Visible = false;
+            btnConfirm.Visible = false;
+            btnRemoveOption1.Visible = false;
+            btnRemoveOption2.Visible = false;
+            btnRemoveOption3.Visible = false;
+            btnRemoveOption4.Visible = false;
+            btnRemoveOption5.Visible = false;
+            btnRemoveOption6.Visible = false;
+            btnRemoveOption7.Visible = false;
+            btnRemoveOption8.Visible = false;
+            btnRemoveOption9.Visible = false;
+            btnRemoveOption10.Visible = false;
+            btnOptionRemoveBack.Visible = false;
+        }
+        private void showSecondPage()
+        {
+            //Set visibility properties for the Second page. Ensure the first and second page is hidden first, so that we do not get any elements from the sub-pages like btnRemove.
+            hideFirstPage();
+            hideSecondPage();
+            lblOptionsWelcome.Visible = true;
+            lblOptionsWelcomeStroke.Visible = true;
+            btnBack.Visible = true;
+            lblOption1.Visible = true;
+            lblOption2.Visible = true;
+            lblOption3.Visible = true;
+            lblOption4.Visible = true;
+            lblOption5.Visible = true;
+            lblOption6.Visible = true;
+            lblOption7.Visible = true;
+            lblOption8.Visible = true;
+            lblOption9.Visible = true;
+            lblOption10.Visible = true;
+            lblOption1Stroke.Visible = true;
+            lblOption2Stroke.Visible = true;
+            lblOption3Stroke.Visible = true;
+            lblOption4Stroke.Visible = true;
+            lblOption5Stroke.Visible = true;
+            lblOption6Stroke.Visible = true;
+            lblOption7Stroke.Visible = true;
+            lblOption8Stroke.Visible = true;
+            lblOption9Stroke.Visible = true;
+            lblOption10Stroke.Visible = true;
+            lblOption1Name.Visible = true;
+            lblOption2Name.Visible = true;
+            lblOption3Name.Visible = true;
+            lblOption4Name.Visible = true;
+            lblOption5Name.Visible = true;
+            lblOption6Name.Visible = true;
+            lblOption7Name.Visible = true;
+            lblOption8Name.Visible = true;
+            lblOption9Name.Visible = true;
+            lblOption10Name.Visible = true;
+            lblOption1NameStroke.Visible = true;
+            lblOption2NameStroke.Visible = true;
+            lblOption3NameStroke.Visible = true;
+            lblOption4NameStroke.Visible = true;
+            lblOption5NameStroke.Visible = true;
+            lblOption6NameStroke.Visible = true;
+            lblOption7NameStroke.Visible = true;
+            lblOption8NameStroke.Visible = true;
+            lblOption9NameStroke.Visible = true;
+            lblOption10NameStroke.Visible = true;
+            btnRemoveOptions.Visible = true;
+            btnAddOptions.Visible = true;
+            txtInput.Visible = false;
+            btnConfirm.Visible = false;
+            btnRemoveOption1.Visible = true;
+            btnRemoveOption2.Visible = true;
+            btnRemoveOption3.Visible = true;
+            btnRemoveOption4.Visible = true;
+            btnRemoveOption5.Visible = true;
+            btnRemoveOption6.Visible = true;
+            btnRemoveOption7.Visible = true;
+            btnRemoveOption8.Visible = true;
+            btnRemoveOption9.Visible = true;
+            btnRemoveOption10.Visible = true;
+
+
+
+            btnRemoveOption1.Visible = false;
+            btnRemoveOption2.Visible = false;
+            btnRemoveOption3.Visible = false;
+            btnRemoveOption4.Visible = false;
+            btnRemoveOption5.Visible = false;
+            btnRemoveOption6.Visible = false;
+            btnRemoveOption7.Visible = false;
+            btnRemoveOption8.Visible = false;
+            btnRemoveOption9.Visible = false;
+            btnRemoveOption10.Visible = false;
+        }
+        private void showFirstPage()
+        {
+            //Set visibility properties for the first page.
+            lblWelcome.Visible = true;
+            lblWelcomeStroke.Visible = true;
+            btnRollOption.Visible = true;
+            btnViewOptions.Visible = true;
+        }
+        private void hideFirstPage()
+        {
+            //Set visibility properties for the first page.
+            lblWelcome.Visible = false;
+            lblWelcomeStroke.Visible = false;
+            lblSelection.Visible = false;
+            lblSelectionStroke.Visible = false;
+            btnRollOption.Visible = false;
+            btnViewOptions.Visible = false;
+        }
+        private void pageToFirst()
+        {
+            //Hide the second page, and show the first page.
+            hideSecondPage();
+            showFirstPage();
+        }
+        private void pageToSecond()
+        {
+            //Hide the first page and show the second.
+            showSecondPage();
+            hideFirstPage();
+        }
+
+        private void btnOptionRemoveBack_Click(object sender, EventArgs e)
+        {
+            showSecondPage();
+        }
+
+        private bool isListEmpty()
+        {
+            //Make sure you write out all the labels first,
+            populateOptionLabels();
+            bool empty = true;
+
+            //Check each option label. If it is not empty, set the empty bool to false. This way, the bool will only be true if all options are empty.
+            if (lblOption1.Name != string.Empty)
+                empty = false;
+            if (lblOption2.Name != string.Empty)
+                empty = false;
+            if (lblOption3.Name != string.Empty)
+                empty = false;
+            if (lblOption4.Name != string.Empty)
+                empty = false;
+            if (lblOption5.Name != string.Empty)
+                empty = false;
+            if (lblOption6.Name != string.Empty)
+                empty = false;
+            if (lblOption7.Name != string.Empty)
+                empty = false;
+            if (lblOption8.Name != string.Empty)
+                empty = false;
+            if (lblOption9.Name != string.Empty)
+                empty = false;
+            if (lblOption10.Name != string.Empty)
+                empty = false;
+
+            return empty;
+        }
     }
 }
-//gamer time
 

@@ -81,6 +81,17 @@
             btnAddOptions = new Button();
             txtInput = new TextBox();
             btnConfirm = new Button();
+            btnRemoveOption1 = new Button();
+            btnRemoveOption2 = new Button();
+            btnRemoveOption3 = new Button();
+            btnRemoveOption4 = new Button();
+            btnRemoveOption5 = new Button();
+            btnRemoveOption6 = new Button();
+            btnRemoveOption7 = new Button();
+            btnRemoveOption8 = new Button();
+            btnRemoveOption9 = new Button();
+            btnRemoveOption10 = new Button();
+            btnOptionRemoveBack = new Button();
             SuspendLayout();
             // 
             // lblWelcome
@@ -564,11 +575,132 @@
             btnConfirm.UseVisualStyleBackColor = true;
             btnConfirm.Click += btnConfirm_Click;
             // 
+            // btnRemoveOption1
+            // 
+            btnRemoveOption1.Location = new Point(68, 115);
+            btnRemoveOption1.Name = "btnRemoveOption1";
+            btnRemoveOption1.Size = new Size(94, 39);
+            btnRemoveOption1.TabIndex = 57;
+            btnRemoveOption1.Text = "Option 1";
+            btnRemoveOption1.UseVisualStyleBackColor = true;
+            btnRemoveOption1.Click += btnRemoveOption1_Click;
+            // 
+            // btnRemoveOption2
+            // 
+            btnRemoveOption2.Location = new Point(179, 115);
+            btnRemoveOption2.Name = "btnRemoveOption2";
+            btnRemoveOption2.Size = new Size(94, 39);
+            btnRemoveOption2.TabIndex = 58;
+            btnRemoveOption2.Text = "Option 2";
+            btnRemoveOption2.UseVisualStyleBackColor = true;
+            btnRemoveOption2.Click += btnRemoveOption2_Click;
+            // 
+            // btnRemoveOption3
+            // 
+            btnRemoveOption3.Location = new Point(294, 115);
+            btnRemoveOption3.Name = "btnRemoveOption3";
+            btnRemoveOption3.Size = new Size(94, 39);
+            btnRemoveOption3.TabIndex = 59;
+            btnRemoveOption3.Text = "Option 3";
+            btnRemoveOption3.UseVisualStyleBackColor = true;
+            btnRemoveOption3.Click += btnRemoveOption3_Click;
+            // 
+            // btnRemoveOption4
+            // 
+            btnRemoveOption4.Location = new Point(394, 115);
+            btnRemoveOption4.Name = "btnRemoveOption4";
+            btnRemoveOption4.Size = new Size(94, 39);
+            btnRemoveOption4.TabIndex = 60;
+            btnRemoveOption4.Text = "Option 4";
+            btnRemoveOption4.UseVisualStyleBackColor = true;
+            btnRemoveOption4.Click += btnRemoveOption4_Click;
+            // 
+            // btnRemoveOption5
+            // 
+            btnRemoveOption5.Location = new Point(504, 115);
+            btnRemoveOption5.Name = "btnRemoveOption5";
+            btnRemoveOption5.Size = new Size(94, 39);
+            btnRemoveOption5.TabIndex = 61;
+            btnRemoveOption5.Text = "Option 5";
+            btnRemoveOption5.UseVisualStyleBackColor = true;
+            btnRemoveOption5.Click += btnRemoveOption5_Click;
+            // 
+            // btnRemoveOption6
+            // 
+            btnRemoveOption6.Location = new Point(68, 160);
+            btnRemoveOption6.Name = "btnRemoveOption6";
+            btnRemoveOption6.Size = new Size(94, 34);
+            btnRemoveOption6.TabIndex = 62;
+            btnRemoveOption6.Text = "Option 6";
+            btnRemoveOption6.UseVisualStyleBackColor = true;
+            btnRemoveOption6.Click += btnRemoveOption6_Click;
+            // 
+            // btnRemoveOption7
+            // 
+            btnRemoveOption7.Location = new Point(179, 160);
+            btnRemoveOption7.Name = "btnRemoveOption7";
+            btnRemoveOption7.Size = new Size(94, 34);
+            btnRemoveOption7.TabIndex = 63;
+            btnRemoveOption7.Text = "Option 7";
+            btnRemoveOption7.UseVisualStyleBackColor = true;
+            btnRemoveOption7.Click += btnRemoveOption7_Click;
+            // 
+            // btnRemoveOption8
+            // 
+            btnRemoveOption8.Location = new Point(294, 160);
+            btnRemoveOption8.Name = "btnRemoveOption8";
+            btnRemoveOption8.Size = new Size(94, 34);
+            btnRemoveOption8.TabIndex = 64;
+            btnRemoveOption8.Text = "Option 8";
+            btnRemoveOption8.UseVisualStyleBackColor = true;
+            btnRemoveOption8.Click += btnRemoveOption8_Click;
+            // 
+            // btnRemoveOption9
+            // 
+            btnRemoveOption9.Location = new Point(394, 160);
+            btnRemoveOption9.Name = "btnRemoveOption9";
+            btnRemoveOption9.Size = new Size(94, 34);
+            btnRemoveOption9.TabIndex = 65;
+            btnRemoveOption9.Text = "Option 9";
+            btnRemoveOption9.UseVisualStyleBackColor = true;
+            btnRemoveOption9.Click += btnRemoveOption9_Click;
+            // 
+            // btnRemoveOption10
+            // 
+            btnRemoveOption10.Location = new Point(504, 160);
+            btnRemoveOption10.Name = "btnRemoveOption10";
+            btnRemoveOption10.Size = new Size(94, 34);
+            btnRemoveOption10.TabIndex = 66;
+            btnRemoveOption10.Text = "Option 10";
+            btnRemoveOption10.UseVisualStyleBackColor = true;
+            btnRemoveOption10.Click += btnRemoveOption10_Click;
+            // 
+            // btnOptionRemoveBack
+            // 
+            btnOptionRemoveBack.Location = new Point(322, 350);
+            btnOptionRemoveBack.Name = "btnOptionRemoveBack";
+            btnOptionRemoveBack.Size = new Size(139, 36);
+            btnOptionRemoveBack.TabIndex = 67;
+            btnOptionRemoveBack.Text = "Back to Options";
+            btnOptionRemoveBack.UseVisualStyleBackColor = true;
+            btnOptionRemoveBack.Click += btnOptionRemoveBack_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(798, 440);
+            Controls.Add(btnOptionRemoveBack);
+            Controls.Add(btnRemoveOption10);
+            Controls.Add(btnRemoveOption9);
+            Controls.Add(btnRemoveOption8);
+            Controls.Add(btnRemoveOption7);
+            Controls.Add(btnRemoveOption6);
+            Controls.Add(btnRemoveOption5);
+            Controls.Add(btnRemoveOption4);
+            Controls.Add(btnRemoveOption3);
+            Controls.Add(btnRemoveOption2);
+            Controls.Add(btnRemoveOption1);
             Controls.Add(btnConfirm);
             Controls.Add(txtInput);
             Controls.Add(btnAddOptions);
@@ -685,5 +817,16 @@
         private Button btnAddOptions;
         private TextBox txtInput;
         private Button btnConfirm;
+        private Button btnRemoveOption1;
+        private Button btnRemoveOption2;
+        private Button btnRemoveOption3;
+        private Button btnRemoveOption4;
+        private Button btnRemoveOption5;
+        private Button btnRemoveOption6;
+        private Button btnRemoveOption7;
+        private Button btnRemoveOption8;
+        private Button btnRemoveOption9;
+        private Button btnRemoveOption10;
+        private Button btnOptionRemoveBack;
     }
 }
