@@ -165,26 +165,26 @@ namespace What2Eat
             this.BackColor = ColorTranslator.FromHtml("#CCBFCA");
 
             //Set the tops and rights for the 'remove option' buttons
-            btnRemoveOption1.Top = lblOption1.Top;
-            btnRemoveOption1.Left = lblOption1.Left;
+
+            int newSize = 6;
+            btnRemoveOption1.Font = new Font(btnRemoveOption1.Font.FontFamily, newSize);
+            btnRemoveOption1.Height = 25;
+            btnRemoveOption1.Top = lblOption1.Top-5;
+            btnRemoveOption1.Left = lblOption1.Left-20;
             //Set the locations of the other buttons using inherritance from the previous
             setButtonLocations(btnRemoveOption1, btnRemoveOption2);
             setButtonLocations(btnRemoveOption2, btnRemoveOption3);
             setButtonLocations(btnRemoveOption3, btnRemoveOption4);
             setButtonLocations(btnRemoveOption4, btnRemoveOption5);
-            //manually set the next button location to create a new row.
-            btnRemoveOption6.Left = btnRemoveOption1.Left;
-            btnRemoveOption6.Top = btnRemoveOption1.Top + btnRemoveOption6.Height + 10;
-            //Set the locations of the other buttons using inherritance from the previous            
+            setButtonLocations(btnRemoveOption5, btnRemoveOption6);      
             setButtonLocations(btnRemoveOption6, btnRemoveOption7);
             setButtonLocations(btnRemoveOption7, btnRemoveOption8);
             setButtonLocations(btnRemoveOption8, btnRemoveOption9);
             setButtonLocations(btnRemoveOption9, btnRemoveOption10);
 
             //Center and place the "back" button for removing options using the form's height
-            perfectOffset = (this.Width - btnOptionRemoveBack.Width) / 2;
-            btnOptionRemoveBack.Left = perfectOffset;
-            btnOptionRemoveBack.Top = this.Height - btnOptionRemoveBack.Height - 100;
+            btnOptionRemoveBack.Top = btnRemoveOptions.Top;
+            btnOptionRemoveBack.Left = btnRemoveOptions.Left;
 
             //Set aesthetic properties for first screen elements.
             SetLabelColors(lblWelcome, lblWelcomeStroke);
@@ -452,7 +452,7 @@ namespace What2Eat
             button.ForeColor = ColorTranslator.FromHtml("#4C3B43");
         }
 
-        private void btnRemoveOption(object sender, EventArgs e)
+        private void btnRemoveOption (object sender, EventArgs e)
         {
             //Hide the second page,
             hideSecondPage();
@@ -467,9 +467,30 @@ namespace What2Eat
             btnRemoveOption8.Visible = true;
             btnRemoveOption9.Visible = true;
             btnRemoveOption10.Visible = true;
+            btnOptionRemoveBack.Visible = true;
             lblOptionsWelcome.Visible = true;
             lblOptionsWelcomeStroke.Visible = true;
-            btnOptionRemoveBack.Visible = true;
+            lblOption1Name.Visible = true;
+            lblOption1NameStroke.Visible = true;
+            lblOption2Name.Visible = true;
+            lblOption2NameStroke.Visible = true;
+            lblOption3Name.Visible = true;
+            lblOption3NameStroke.Visible = true;
+            lblOption4Name.Visible = true;
+            lblOption4NameStroke.Visible = true;
+            lblOption5Name.Visible = true;
+            lblOption5NameStroke.Visible = true;
+            lblOption6Name.Visible = true;
+            lblOption6NameStroke.Visible = true;
+            lblOption7Name.Visible = true;
+            lblOption7NameStroke.Visible = true;
+            lblOption8Name.Visible = true;
+            lblOption8NameStroke.Visible = true;
+            lblOption9Name.Visible = true;
+            lblOption9NameStroke.Visible = true;
+            lblOption10Name.Visible = true;
+            lblOption10NameStroke.Visible = true;
+
             //Set the notif text to tell the user what to do.
             lblOptionsWelcome.Text = "Which option would you like to delete?";
         }
@@ -643,6 +664,7 @@ namespace What2Eat
             //Set visibilities for the user to the next page.
             btnConfirm.Visible = false;
             txtInput.Visible = false;
+            txtInput.Text = "";
             pageToSecond();
             //Write out the file to ensure uniformity.
             string filePath = @"restaraunts.txt";
@@ -792,10 +814,12 @@ namespace What2Eat
 
         private void setButtonLocations(System.Windows.Forms.Button beforeButton, System.Windows.Forms.Button currentButton)
         {
+            int newSize = 6;
+            currentButton.Font = new Font(currentButton.Font.FontFamily, newSize);
+            currentButton.Height = 25;
             //set a current putton location using an int spacer, and the previous button's location.
-            int btnHoroizSpacing = beforeButton.Width + 5;
-            currentButton.Top = beforeButton.Top;
-            currentButton.Left = beforeButton.Left + btnHoroizSpacing;
+            currentButton.Top = beforeButton.Top + currentButton.Height;
+            currentButton.Left = beforeButton.Left;
         }
 
         private void hideSecondPage()
